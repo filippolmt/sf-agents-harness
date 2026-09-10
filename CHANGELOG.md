@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 This project has no semantic versioning — the latest commit is the current version.
 Changes are grouped by date.
 
+## [2026-09-10]
+
+### Changed
+
+- `sf-writing-style`, `gh` and `glab` now use bold text, lists and sections where they make short descriptions easier to scan, with relevant screenshots and verified validation. Descriptions retain essential context and match the final scope, with public writing guidance linked as references.
+
 ## [2026-09-09]
 
 ### Changed
