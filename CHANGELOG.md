@@ -12,6 +12,10 @@ Changes are grouped by date.
 
 - `sf-writing-style` now gives detailed issue tasks short bold outcomes for faster scanning while keeping simple checklists plain.
 
+### Fixed
+
+- `glab` now requires issue template discovery, selects clear matches automatically, and asks only when several templates fit.
+
 ## [2026-09-10]
 
 ### Changed
