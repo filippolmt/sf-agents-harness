@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 This project has no semantic versioning — the latest commit is the current version.
 Changes are grouped by date.
 
+## [2026-09-22]
+
+### Added
+
+- `security-audit` skill in the `security` category: multi-phase security audits with independently verified, machine-readable findings. Synced from [cloudflare/security-audit-skill](https://github.com/cloudflare/security-audit-skill).
+
 ## [2026-09-21]
 
 ### Changed

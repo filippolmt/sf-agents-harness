@@ -55,6 +55,9 @@
     "security-assessment": {
       "description": "Orchestrate VA + PT tracks into one HTML report"
     },
+    "security-audit": {
+      "description": "Multi-phase security audit with verified findings"
+    },
     "sf-container-build": {
       "description": "Build and review secure multi-platform container images"
     },

@@ -28,6 +28,7 @@ Inspired by [github/awesome-copilot](https://github.com/github/awesome-copilot/t
 | **grill-with-docs**        | Explicit grilling session that combines structured questioning with glossary and ADR updates                                                                  | `skills/system/grill-with-docs/`          |
 | **security-assessment**    | Orchestrate VA (static scanning, Docker scans, manual review) + PT (live recon/exploitation) tracks and merge both into one standalone HTML report            | `skills/security/security-assessment/`    |
 | **agentic-security-audit** | AI agent security audit -- instruction files, MCP configs, LLM integration, OWASP Agentic Top 10                                                              | `skills/security/agentic-security-audit/` |
+| **security-audit**         | Multi-phase security audit with independently verified, machine-readable findings and report artifacts                                                        | `skills/security/security-audit/`         |
 | **githuman**               | Review AI-generated code before committing via GitHuman Docker instances (sjust/ajust)                                                                        | `skills/system/githuman/`                 |
 | **auto-format-doc**        | Auto-format files after writing/editing them via Just recipes (sjust/ajust) -- Markdown/Prettier                                                              | `skills/system/auto-format-doc/`          |
 | **sf-container-build**     | Build and review container images with explicit platform contracts, runtime tests, supply-chain controls, and SparkFabrik conventions                         | `skills/system/sf-container-build/`       |
@@ -56,9 +57,9 @@ ajust sf-harness-category enable angular
 ajust sf-harness-category disable angular
 ```
 
-The `security` category holds the security engagement skills, `security-assessment`
-and `agentic-security-audit`. They were system skills until 2026-09-01 and are
-opt-in now, so enable the category on machines that do security work.
+The `security` category holds the security engagement skills: `security-assessment`,
+`agentic-security-audit` and `security-audit`. The first two were system skills until
+2026-09-01 and are opt-in now, so enable the category on machines that do security work.
 
 ## Agents
 
