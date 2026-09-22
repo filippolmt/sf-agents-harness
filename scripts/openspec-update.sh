@@ -2,10 +2,10 @@
 #
 # Regenerate the OpenSpec commands and skills checked into this repository.
 #
-# The generated trees depend on the OpenSpec CLI version and on the global CLI
-# profile, so both are pinned in config/openspec-profile.json. This script
-# applies the pinned profile to the global config (merging, never replacing) and
-# runs the pinned CLI, so the output does not depend on personal settings.
+# The generated trees depend on the global OpenSpec CLI profile, which is pinned
+# in config/openspec-profile.json. This script applies that profile to the global
+# config (merging, never replacing) and runs the latest published CLI, so the
+# output does not depend on personal settings or on a locally installed version.
 #
 # Usage:
 #   ./scripts/openspec-update.sh           # regenerate in place
@@ -14,8 +14,8 @@
 
 set -euo pipefail
 
-readonly MANIFEST="config/openspec-profile.json"
-readonly PACKAGE="@fission-ai/openspec"
+readonly PROFILE="config/openspec-profile.json"
+readonly PACKAGE="@fission-ai/openspec@latest"
 
 # Trees written by `openspec update`. Keep in sync with the tools configured in
 # the repository (Claude Code, GitHub Copilot, OpenCode).
@@ -53,12 +53,6 @@ done
 repo_root=$(git rev-parse --show-toplevel)
 cd "$repo_root"
 
-cli_version=$(jq -r '.cli_version' "$MANIFEST")
-if [[ -z "$cli_version" || "$cli_version" == "null" ]]; then
-  echo "error: $MANIFEST does not declare cli_version" >&2
-  exit 2
-fi
-
 config_home="${XDG_CONFIG_HOME:-$HOME/.config}/openspec"
 config_file="$config_home/config.json"
 mkdir -p "$config_home"
@@ -69,11 +63,11 @@ existing_config="{}"
 if [[ -f "$config_file" ]]; then
   existing_config=$(cat "$config_file")
 fi
-jq -s '.[0] * .[1].config' <(printf '%s' "$existing_config") "$MANIFEST" >"$config_file.tmp"
+jq -s '.[0] * .[1]' <(printf '%s' "$existing_config") "$PROFILE" >"$config_file.tmp"
 mv "$config_file.tmp" "$config_file"
 
-echo "Regenerating OpenSpec files with $PACKAGE@$cli_version"
-npx --yes "$PACKAGE@$cli_version" update --force
+echo "Regenerating OpenSpec files with $PACKAGE"
+npx --yes "$PACKAGE" update --force
 
 if [[ "$check_only" != true ]]; then
   exit 0

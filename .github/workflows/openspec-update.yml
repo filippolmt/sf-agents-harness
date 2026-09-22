@@ -46,23 +46,17 @@ jobs:
         with:
           token: ${{ steps.app-token.outputs.token }}
 
-      - name: Bump the pinned OpenSpec CLI version
+      - name: Regenerate OpenSpec files
         id: openspec
         run: |
-          version=$(npm view @fission-ai/openspec version)
-          echo "version=$version" >> "$GITHUB_OUTPUT"
-          jq --arg version "$version" '.cli_version = $version' \
-            config/openspec-profile.json >config/openspec-profile.json.tmp
-          mv config/openspec-profile.json.tmp config/openspec-profile.json
-
-      - name: Regenerate OpenSpec files
-        run: ./scripts/openspec-update.sh
+          echo "version=$(npm view @fission-ai/openspec version)" >> "$GITHUB_OUTPUT"
+          ./scripts/openspec-update.sh
 
       - name: Check generated changes
         id: diff
         run: |
           mapfile -t generated_paths < <(./scripts/openspec-update.sh --paths)
-          if [[ -z "$(git status --porcelain --untracked-files=all -- "${generated_paths[@]}" config/openspec-profile.json)" ]]; then
+          if [[ -z "$(git status --porcelain --untracked-files=all -- "${generated_paths[@]}")" ]]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -81,9 +75,6 @@ jobs:
 
           for changed_path in "${changed_paths[@]}"; do
             allowed=false
-            if [[ "$changed_path" == "config/openspec-profile.json" ]]; then
-              continue
-            fi
             for generated_path in "${generated_paths[@]}"; do
               if [[ "$changed_path" == "$generated_path/"* ]]; then
                 allowed=true
@@ -117,7 +108,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -b "$branch"
-          git add "${generated_paths[@]}" config/openspec-profile.json CHANGELOG.md
+          git add "${generated_paths[@]}" CHANGELOG.md
           git commit -m "chore(openspec): update generated files"
           git push -u origin "$branch"
           pr_url=$(gh pr create \
@@ -127,12 +118,11 @@ jobs:
 
           ## Automated update
 
-          Pinned OpenSpec CLI ${{ steps.openspec.outputs.version }} in
-          config/openspec-profile.json and regenerated the commands and skills for
-          Claude Code, GitHub Copilot, and OpenCode.
+          Regenerated the OpenSpec commands and skills for Claude Code, GitHub Copilot,
+          and OpenCode with OpenSpec CLI ${{ steps.openspec.outputs.version }}.
 
-          The CLI version and the generation profile are pinned in the same file,
-          so local regeneration produces the same output as this workflow.
+          The generation profile is pinned in config/openspec-profile.json, so local
+          regeneration produces the same output as this workflow.
           EOF
           )")
           echo "url=$pr_url" >> "$GITHUB_OUTPUT"
